@@ -4,16 +4,13 @@ Pod::Spec.new do |spec|
     spec.version      = "0.0.1"
     spec.summary      = "MeetNetworkHTTP is an HTTP networking library written in Swift."
 
-    spec.description  = <<-DESC
-                   DESC
-
     spec.homepage     = "https://meetinglawyers.com"
 
     spec.license      = { :type => 'Copyright', :text => 'Copyright © 2021 MeetingLawyers S.L. All rights reserved.' }
 
     spec.authors      = { "Manel Roca" => "manel.roca@meetinglawyers.com" }
 
-    spec.source       = { :git => "https://github.com/MeetingLawyers/ios-meeting-shared.git", :tag => spec.name + '-' + spec.version }
+    spec.source       = { :git => "https://github.com/MeetingLawyers/ios-meeting-shared.git", :tag => spec.name + '-' + spec.version.to_s }
 
     spec.ios.deployment_target = '11.0'
     spec.platform = :ios, '11.0'
