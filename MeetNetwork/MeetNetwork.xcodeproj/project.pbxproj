@@ -14,6 +14,11 @@
 		8A6317CB26C69F340099D1F0 /* MeetNetworkSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6317C226C69F340099D1F0 /* MeetNetworkSocket.framework */; };
 		8A6317D026C69F340099D1F0 /* MeetNetworkSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6317CF26C69F340099D1F0 /* MeetNetworkSocketTests.swift */; };
 		8A6317D226C69F340099D1F0 /* MeetNetworkSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6317C426C69F340099D1F0 /* MeetNetworkSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8A6317DA26C6A2750099D1F0 /* MeetNetworkHTTP.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 8A6317D926C6A2750099D1F0 /* MeetNetworkHTTP.podspec */; };
+		8A999A1C26CA6B7F0024D025 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A999A1B26CA6B7F0024D025 /* HTTPMethod.swift */; };
+		8A999A1E26CA6BD10024D025 /* HTTPStatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A999A1D26CA6BD10024D025 /* HTTPStatusCode.swift */; };
+		8A999A2026CA6E4F0024D025 /* MeetNetworkHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A999A1F26CA6E4F0024D025 /* MeetNetworkHTTPClient.swift */; };
+		8A999A2226CAA20C0024D025 /* MeetNetworkHTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A999A2126CAA20C0024D025 /* MeetNetworkHTTPClientTests.swift */; };
 		DDFD621F037CE3D5FF097DFB /* Pods_MeetNetworkHTTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3CCC472C40A68DE2730D8BA /* Pods_MeetNetworkHTTP.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +56,11 @@
 		8A6317CA26C69F340099D1F0 /* MeetNetworkSocketTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MeetNetworkSocketTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A6317CF26C69F340099D1F0 /* MeetNetworkSocketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetNetworkSocketTests.swift; sourceTree = "<group>"; };
 		8A6317D126C69F340099D1F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8A6317D926C6A2750099D1F0 /* MeetNetworkHTTP.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MeetNetworkHTTP.podspec; sourceTree = "<group>"; };
+		8A999A1B26CA6B7F0024D025 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		8A999A1D26CA6BD10024D025 /* HTTPStatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPStatusCode.swift; sourceTree = "<group>"; };
+		8A999A1F26CA6E4F0024D025 /* MeetNetworkHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetNetworkHTTPClient.swift; sourceTree = "<group>"; };
+		8A999A2126CAA20C0024D025 /* MeetNetworkHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetNetworkHTTPClientTests.swift; sourceTree = "<group>"; };
 		D18D53096EA636BC4DD677CD /* Pods-MeetNetworkSocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeetNetworkSocket.debug.xcconfig"; path = "Target Support Files/Pods-MeetNetworkSocket/Pods-MeetNetworkSocket.debug.xcconfig"; sourceTree = "<group>"; };
 		F3CCC472C40A68DE2730D8BA /* Pods_MeetNetworkHTTP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MeetNetworkHTTP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -127,8 +137,12 @@
 		8A6317A726C69F0A0099D1F0 /* MeetNetworkHTTP */ = {
 			isa = PBXGroup;
 			children = (
+				8A6317D926C6A2750099D1F0 /* MeetNetworkHTTP.podspec */,
 				8A6317A826C69F0A0099D1F0 /* MeetNetworkHTTP.h */,
 				8A6317A926C69F0A0099D1F0 /* Info.plist */,
+				8A999A1B26CA6B7F0024D025 /* HTTPMethod.swift */,
+				8A999A1D26CA6BD10024D025 /* HTTPStatusCode.swift */,
+				8A999A1F26CA6E4F0024D025 /* MeetNetworkHTTPClient.swift */,
 			);
 			path = MeetNetworkHTTP;
 			sourceTree = "<group>";
@@ -138,6 +152,7 @@
 			children = (
 				8A6317B326C69F0B0099D1F0 /* MeetNetworkHTTPTests.swift */,
 				8A6317B526C69F0B0099D1F0 /* Info.plist */,
+				8A999A2126CAA20C0024D025 /* MeetNetworkHTTPClientTests.swift */,
 			);
 			path = MeetNetworkHTTPTests;
 			sourceTree = "<group>";
@@ -279,6 +294,7 @@
 				TargetAttributes = {
 					8A6317A426C69F0A0099D1F0 = {
 						CreatedOnToolsVersion = 12.5.1;
+						LastSwiftMigration = 1250;
 					};
 					8A6317AD26C69F0B0099D1F0 = {
 						CreatedOnToolsVersion = 12.5.1;
@@ -317,6 +333,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A6317DA26C6A2750099D1F0 /* MeetNetworkHTTP.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,6 +412,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A999A1C26CA6B7F0024D025 /* HTTPMethod.swift in Sources */,
+				8A999A2026CA6E4F0024D025 /* MeetNetworkHTTPClient.swift in Sources */,
+				8A999A1E26CA6BD10024D025 /* HTTPStatusCode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +422,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A999A2226CAA20C0024D025 /* MeetNetworkHTTPClientTests.swift in Sources */,
 				8A6317B426C69F0B0099D1F0 /* MeetNetworkHTTPTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -612,6 +633,7 @@
 		8A6317BB26C69F0B0099D1F0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -685,6 +707,7 @@
 		8A6317BC26C69F0B0099D1F0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
