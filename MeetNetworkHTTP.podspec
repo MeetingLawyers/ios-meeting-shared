@@ -18,6 +18,6 @@ Pod::Spec.new do |spec|
 
     spec.source_files = "MeetNetwork/MeetNetworkHTTP/**/*.{swift}"
 
-    spec.resources = "MeetNetwork/MeetNetworkHTTP/**/*.{png,jpeg,jpg,storyboard,xib,xcassets}"
+#    spec.resources = "MeetNetwork/MeetNetworkHTTP/**/*.{png,jpeg,jpg,storyboard,xib,xcassets}"
 
 end

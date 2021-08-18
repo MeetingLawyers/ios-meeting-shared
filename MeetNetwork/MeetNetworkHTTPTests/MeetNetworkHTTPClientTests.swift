@@ -102,7 +102,6 @@ class MeetNetworkHTTPClientTests: XCTestCase {
     
     func testAddGetParameterAssertURL() {
         // Given
-        let client = MeetNetworkHTTPClient.shared
         var request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get)
         let params = ["test1" : "value1"]
         
@@ -115,7 +114,6 @@ class MeetNetworkHTTPClientTests: XCTestCase {
     
     func testAddGetParameterSpaceAssertURL() {
         // Given
-        let client = MeetNetworkHTTPClient.shared
         var request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get)
         let params = ["test1" : "value 1"]
         
@@ -128,7 +126,6 @@ class MeetNetworkHTTPClientTests: XCTestCase {
     
     func testAddGetParameters() {
         // Given
-        let client = MeetNetworkHTTPClient.shared
         var request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get)
         let params = ["test1" : "value 1", "test2" : "value2", "test3" : "value3"]
         
@@ -141,4 +138,45 @@ class MeetNetworkHTTPClientTests: XCTestCase {
         
         XCTAssertEqual(queryItems!.count, 3)
     }
+    
+    // MARK: - Handlers
+    
+    func testSuccessHandlerIsInMainThread() {
+        // Given
+        let wrapper = Wrapper(test: "test")
+        let expectation = XCTestExpectation(description: "call success handler in the main thread")
+        
+        //When
+        DispatchQueue.global().async {
+            self.client.callSuccessHandler(data: wrapper) { wrapper in
+                // Then
+                XCTAssertTrue(Thread.isMainThread)
+                expectation.fulfill()
+            }
+        }
+        
+        wait(for: [expectation], timeout: 10.0)
+    }
+    
+    func testFailureHandlerIsInMainThread() {
+        // Given
+        let wrapper = Wrapper(test: "test")
+        let expectation = XCTestExpectation(description: "call failure handler in the main thread")
+        
+        
+        //When
+        DispatchQueue.global().async {
+            self.client.callFailureHandler(error: wrapper, code: 0, body: "") { error, code, body in
+                // Then
+                XCTAssertTrue(Thread.isMainThread)
+                expectation.fulfill()
+            }
+        }
+        
+        wait(for: [expectation], timeout: 10.0)
+    }
+}
+
+private struct Wrapper: Decodable {
+    let test: String
 }
