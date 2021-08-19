@@ -9,15 +9,15 @@ import XCTest
 
 @testable import MeetNetworkHTTP
 
-class MeetNetworkHTTPClientTests: XCTestCase {
+class HTTPClientTests: XCTestCase {
     
-    private var client: MeetNetworkHTTPClient!
+    private var client: HTTPClient!
 
     override func setUp() {
         super.setUp()
         // Using this, a new instance of ShoppingCart will be created
         // before each test is run.
-        client = MeetNetworkHTTPClient.shared
+        client = HTTPClient.shared
     }
 
 
@@ -141,32 +141,15 @@ class MeetNetworkHTTPClientTests: XCTestCase {
     
     // MARK: - Handlers
     
-    func testSuccessHandlerIsInMainThread() {
+    func testCompletionHandlerIsInMainThread() {
         // Given
         let wrapper = Wrapper(test: "test")
         let expectation = XCTestExpectation(description: "call success handler in the main thread")
         
         //When
         DispatchQueue.global().async {
-            self.client.callSuccessHandler(data: wrapper) { wrapper in
-                // Then
-                XCTAssertTrue(Thread.isMainThread)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 10.0)
-    }
-    
-    func testFailureHandlerIsInMainThread() {
-        // Given
-        let wrapper = Wrapper(test: "test")
-        let expectation = XCTestExpectation(description: "call failure handler in the main thread")
-        
-        
-        //When
-        DispatchQueue.global().async {
-            self.client.callFailureHandler(error: wrapper, code: 0, body: "") { error, code, body in
+            let result: HTTPResult<Wrapper, Wrapper> = .success(wrapper)
+            self.client.callCompletionHandlerInMainThread(result: result) { Result in
                 // Then
                 XCTAssertTrue(Thread.isMainThread)
                 expectation.fulfill()

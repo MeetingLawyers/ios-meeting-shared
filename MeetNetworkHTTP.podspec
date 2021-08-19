@@ -10,13 +10,18 @@ Pod::Spec.new do |spec|
 
     spec.authors      = { "Manel Roca" => "manel.roca@meetinglawyers.com" }
 
-    spec.source       = { :git => "https://github.com/MeetingLawyers/ios-meeting-shared.git", :tag => spec.name + '-' + spec.version.to_s }
+    spec.source       = {   :git => "https://github.com/MeetingLawyers/ios-meeting-shared.git",
+                            :tag => spec.name + '-' + spec.version.to_s }
 
     spec.ios.deployment_target = '11.0'
     spec.platform = :ios, '11.0'
     spec.swift_version = '5.3'
 
     spec.source_files = "MeetNetwork/MeetNetworkHTTP/**/*.{swift}"
+    
+    spec.test_spec do|test|
+        test.source_files = "MeetNetwork/MeetNetworkHTTPTests/**/*.swift"
+    end
 
 #    spec.resources = "MeetNetwork/MeetNetworkHTTP/**/*.{png,jpeg,jpg,storyboard,xib,xcassets}"
 

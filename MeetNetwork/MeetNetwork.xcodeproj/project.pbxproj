@@ -21,7 +21,7 @@
 		8A999A1C26CA6B7F0024D025 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A999A1B26CA6B7F0024D025 /* HTTPMethod.swift */; };
 		8A999A1E26CA6BD10024D025 /* HTTPStatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A999A1D26CA6BD10024D025 /* HTTPStatusCode.swift */; };
 		8A999A2026CA6E4F0024D025 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A999A1F26CA6E4F0024D025 /* HTTPClient.swift */; };
-		8A999A2226CAA20C0024D025 /* MeetNetworkHTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A999A2126CAA20C0024D025 /* MeetNetworkHTTPClientTests.swift */; };
+		8A999A2226CAA20C0024D025 /* HTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A999A2126CAA20C0024D025 /* HTTPClientTests.swift */; };
 		DDFD621F037CE3D5FF097DFB /* Pods_MeetNetworkHTTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3CCC472C40A68DE2730D8BA /* Pods_MeetNetworkHTTP.framework */; };
 /* End PBXBuildFile section */
 
@@ -66,7 +66,7 @@
 		8A999A1B26CA6B7F0024D025 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		8A999A1D26CA6BD10024D025 /* HTTPStatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPStatusCode.swift; sourceTree = "<group>"; };
 		8A999A1F26CA6E4F0024D025 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
-		8A999A2126CAA20C0024D025 /* MeetNetworkHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetNetworkHTTPClientTests.swift; sourceTree = "<group>"; };
+		8A999A2126CAA20C0024D025 /* HTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientTests.swift; sourceTree = "<group>"; };
 		D18D53096EA636BC4DD677CD /* Pods-MeetNetworkSocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeetNetworkSocket.debug.xcconfig"; path = "Target Support Files/Pods-MeetNetworkSocket/Pods-MeetNetworkSocket.debug.xcconfig"; sourceTree = "<group>"; };
 		F3CCC472C40A68DE2730D8BA /* Pods_MeetNetworkHTTP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MeetNetworkHTTP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -161,7 +161,7 @@
 			children = (
 				8A6317B326C69F0B0099D1F0 /* MeetNetworkHTTPTests.swift */,
 				8A6317B526C69F0B0099D1F0 /* Info.plist */,
-				8A999A2126CAA20C0024D025 /* MeetNetworkHTTPClientTests.swift */,
+				8A999A2126CAA20C0024D025 /* HTTPClientTests.swift */,
 			);
 			path = MeetNetworkHTTPTests;
 			sourceTree = "<group>";
@@ -434,7 +434,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A999A2226CAA20C0024D025 /* MeetNetworkHTTPClientTests.swift in Sources */,
+				8A999A2226CAA20C0024D025 /* HTTPClientTests.swift in Sources */,
 				8A6317B426C69F0B0099D1F0 /* MeetNetworkHTTPTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
