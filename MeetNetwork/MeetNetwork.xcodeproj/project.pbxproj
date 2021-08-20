@@ -11,7 +11,6 @@
 		8A5C53FE26CD0A1C00F7282C /* HTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5C53FD26CD0A1C00F7282C /* HTTPError.swift */; };
 		8A5C540026CD182E00F7282C /* HTTPResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5C53FF26CD182E00F7282C /* HTTPResult.swift */; };
 		8A6317AF26C69F0B0099D1F0 /* MeetNetworkHTTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6317A526C69F0A0099D1F0 /* MeetNetworkHTTP.framework */; };
-		8A6317B426C69F0B0099D1F0 /* MeetNetworkHTTPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6317B326C69F0B0099D1F0 /* MeetNetworkHTTPTests.swift */; };
 		8A6317B626C69F0B0099D1F0 /* MeetNetworkHTTP.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6317A826C69F0A0099D1F0 /* MeetNetworkHTTP.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8A6317CB26C69F340099D1F0 /* MeetNetworkSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6317C226C69F340099D1F0 /* MeetNetworkSocket.framework */; };
 		8A6317D026C69F340099D1F0 /* MeetNetworkSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6317CF26C69F340099D1F0 /* MeetNetworkSocketTests.swift */; };
@@ -53,7 +52,6 @@
 		8A6317A826C69F0A0099D1F0 /* MeetNetworkHTTP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeetNetworkHTTP.h; sourceTree = "<group>"; };
 		8A6317A926C69F0A0099D1F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A6317AE26C69F0B0099D1F0 /* MeetNetworkHTTPTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MeetNetworkHTTPTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8A6317B326C69F0B0099D1F0 /* MeetNetworkHTTPTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetNetworkHTTPTests.swift; sourceTree = "<group>"; };
 		8A6317B526C69F0B0099D1F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A6317C226C69F340099D1F0 /* MeetNetworkSocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MeetNetworkSocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A6317C426C69F340099D1F0 /* MeetNetworkSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeetNetworkSocket.h; sourceTree = "<group>"; };
@@ -159,7 +157,6 @@
 		8A6317B226C69F0B0099D1F0 /* MeetNetworkHTTPTests */ = {
 			isa = PBXGroup;
 			children = (
-				8A6317B326C69F0B0099D1F0 /* MeetNetworkHTTPTests.swift */,
 				8A6317B526C69F0B0099D1F0 /* Info.plist */,
 				8A999A2126CAA20C0024D025 /* HTTPClientTests.swift */,
 			);
@@ -435,7 +432,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A999A2226CAA20C0024D025 /* HTTPClientTests.swift in Sources */,
-				8A6317B426C69F0B0099D1F0 /* MeetNetworkHTTPTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

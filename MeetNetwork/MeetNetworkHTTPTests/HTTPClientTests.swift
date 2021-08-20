@@ -34,7 +34,7 @@ class HTTPClientTests: XCTestCase {
     func testCreateURLRequestInvalid() {
         // Given
         // When
-        let request = client.createURLRequest(url: "test test", method: HTTPMethod.get)
+        let request = client.createURLRequest(url: "test test", method: HTTPMethod.get, headers: nil, parameters: nil)
 
         // Then
         XCTAssertNil(request)
@@ -44,7 +44,7 @@ class HTTPClientTests: XCTestCase {
     func testCreateURLRequestGET() {
         // Given
         // When
-        let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get)
+        let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get, headers: nil, parameters: nil)
 
         // Then
         XCTAssertEqual(request!.httpMethod, "GET")
@@ -54,7 +54,7 @@ class HTTPClientTests: XCTestCase {
     func testCreateURLRequestPOST() {
         // Given
         // When
-        let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.post)
+        let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.post, headers: nil, parameters: nil)
 
         // Then
         XCTAssertEqual(request!.httpMethod, "POST")
@@ -64,7 +64,7 @@ class HTTPClientTests: XCTestCase {
     func testCreateURLRequestPUT() {
         // Given
         // When
-        let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.put)
+        let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.put, headers: nil, parameters: nil)
 
         // Then
         XCTAssertEqual(request!.httpMethod, "PUT")
@@ -74,7 +74,7 @@ class HTTPClientTests: XCTestCase {
     func testCreateURLRequestDELETE() {
         // Given
         // When
-        let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.delete)
+        let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.delete, headers: nil, parameters: nil)
 
         // Then
         XCTAssertEqual(request!.httpMethod, "DELETE")
@@ -85,58 +85,71 @@ class HTTPClientTests: XCTestCase {
     // Tests add header to request
     func testAddRequestHeaders() {
         // Given
-        var request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get)
         let headers = ["TEST1-Accept-Charset" : "utf-8", "TEST2-Content-Type" : "application/json"]
         
         // When
-        client.addRequestHeaders(request: &request!, headers: headers)
-
+        let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get, headers: headers, parameters: nil)
+        var request2 = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get, headers: nil, parameters: nil)
+        client.addRequestHeaders(request: &request2!, headers: headers)
+        
         // Then
+        // Request 1
         XCTAssertEqual(request!.value(forHTTPHeaderField:"TEST1-Accept-Charset"), "utf-8")
         XCTAssertEqual(request!.value(forHTTPHeaderField:"TEST2-Content-Type"), "application/json")
         
         XCTAssertEqual(request!.allHTTPHeaderFields?.count, 2)
+        // Request 2
+        XCTAssertEqual(request2!.value(forHTTPHeaderField:"TEST1-Accept-Charset"), "utf-8")
+        XCTAssertEqual(request2!.value(forHTTPHeaderField:"TEST2-Content-Type"), "application/json")
+        
+        XCTAssertEqual(request2!.allHTTPHeaderFields?.count, 2)
+        
+        XCTAssertEqual(request?.allHTTPHeaderFields, request2?.allHTTPHeaderFields)
     }
 
     // MARK: - PARAMS
     
-    func testAddGetParameterAssertURL() {
+    func testAddGetParametersAssertCountAndEquatable() {
         // Given
-        var request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get)
-        let params = ["test1" : "value1"]
-        
-        // When
-        client.addGetParameters(request: &request!, parameters: params)
-
-        // Then
-        XCTAssertEqual(request?.url?.absoluteString, "https://test.com?test1=value1")
-    }
-    
-    func testAddGetParameterSpaceAssertURL() {
-        // Given
-        var request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get)
-        let params = ["test1" : "value 1"]
-        
-        // When
-        client.addGetParameters(request: &request!, parameters: params)
-
-        // Then
-        XCTAssertEqual(request?.url?.absoluteString, "https://test.com?test1=value%201")
-    }
-    
-    func testAddGetParameters() {
-        // Given
-        var request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get)
         let params = ["test1" : "value 1", "test2" : "value2", "test3" : "value3"]
         
         // When
-        client.addGetParameters(request: &request!, parameters: params)
+        let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get, headers: nil, parameters: params)
+        var request2 = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get, headers: nil, parameters: nil)
+        client.addGetParameters(request: &request2!, parameters: params)
 
         // Then
         let compareUrl = URLComponents(url: request!.url!, resolvingAgainstBaseURL: true)
         let queryItems = compareUrl!.queryItems
         
         XCTAssertEqual(queryItems!.count, 3)
+        
+        let compareUrl2 = URLComponents(url: request2!.url!, resolvingAgainstBaseURL: true)
+        let queryItems2 = compareUrl2!.queryItems
+        
+        XCTAssertEqual(queryItems2!.count, 3)
+    }
+    
+    func testAddGetParametersAssertURLGeneration() {
+        // Given
+        let params = ["test1" : "value1"]
+        
+        // When
+        let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get, headers: nil, parameters: params)
+        
+        // Then
+        XCTAssertEqual(request?.url?.absoluteString, "https://test.com?test1=value1")
+    }
+    
+    func testAddGetParametersSpaceAssertURLGeneration() {
+        // Given
+        let params = ["test1" : "value 1"]
+        
+        // When
+        let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get, headers: nil, parameters: params)
+        
+        // Then
+        XCTAssertEqual(request?.url?.absoluteString, "https://test.com?test1=value%201")
     }
     
     // MARK: - Handlers
