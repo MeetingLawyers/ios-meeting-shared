@@ -15,18 +15,7 @@ class HTTPClientTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        // Using this, a new instance of ShoppingCart will be created
-        // before each test is run.
         client = HTTPClient.shared
-    }
-
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
     // MARK: - URL REQUEST METHODS
@@ -111,12 +100,20 @@ class HTTPClientTests: XCTestCase {
     
     func testAddGetParametersAssertCountAndEquatable() {
         // Given
+        struct Foo : Codable {
+            var test1 : String
+            var test2 : String
+            var test3 : String
+        }
+        
         let params = ["test1" : "value 1", "test2" : "value2", "test3" : "value3"]
+        let params2 = Foo(test1: "value 1", test2: "value2", test3: "value3")
         
         // When
         let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get, headers: nil, parameters: params)
         var request2 = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get, headers: nil, parameters: nil)
         client.addGetParameters(request: &request2!, parameters: params)
+        let request3 = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get, headers: nil, parameters: params2)
 
         // Then
         let compareUrl = URLComponents(url: request!.url!, resolvingAgainstBaseURL: true)
@@ -128,28 +125,49 @@ class HTTPClientTests: XCTestCase {
         let queryItems2 = compareUrl2!.queryItems
         
         XCTAssertEqual(queryItems2!.count, 3)
+        
+        let compareUrl3 = URLComponents(url: request3!.url!, resolvingAgainstBaseURL: true)
+        let queryItems3 = compareUrl3!.queryItems
+        
+        XCTAssertEqual(queryItems3!.count, 3)
     }
     
     func testAddGetParametersAssertURLGeneration() {
         // Given
+        struct Foo : Codable {
+            var test1 : String
+        }
+        
         let params = ["test1" : "value1"]
+        
+        let params2 = Foo(test1: "value1")
         
         // When
         let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get, headers: nil, parameters: params)
         
+        let request2 = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get, headers: nil, parameters: params2)
+        
         // Then
         XCTAssertEqual(request?.url?.absoluteString, "https://test.com?test1=value1")
+        XCTAssertEqual(request2?.url?.absoluteString, "https://test.com?test1=value1")
     }
     
     func testAddGetParametersSpaceAssertURLGeneration() {
         // Given
+        struct Foo : Codable {
+            var test1 : String
+        }
+        
         let params = ["test1" : "value 1"]
+        let params2 = Foo(test1: "value 1")
         
         // When
         let request = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get, headers: nil, parameters: params)
+        let request2 = client.createURLRequest(url: "https://test.com", method: HTTPMethod.get, headers: nil, parameters: params2)
         
         // Then
         XCTAssertEqual(request?.url?.absoluteString, "https://test.com?test1=value%201")
+        XCTAssertEqual(request2?.url?.absoluteString, "https://test.com?test1=value%201")
     }
     
     // MARK: - Handlers

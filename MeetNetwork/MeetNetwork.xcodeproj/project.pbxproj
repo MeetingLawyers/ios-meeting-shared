@@ -16,6 +16,9 @@
 		8A6317D026C69F340099D1F0 /* MeetNetworkSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6317CF26C69F340099D1F0 /* MeetNetworkSocketTests.swift */; };
 		8A6317D226C69F340099D1F0 /* MeetNetworkSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6317C426C69F340099D1F0 /* MeetNetworkSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8A6317DA26C6A2750099D1F0 /* MeetNetworkHTTP.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 8A6317D926C6A2750099D1F0 /* MeetNetworkHTTP.podspec */; };
+		8A8D21D92716C59E00108290 /* HTTPClient+Get.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8D21D82716C59E00108290 /* HTTPClient+Get.swift */; };
+		8A8D21DB2716C5FE00108290 /* HTTPClient+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8D21DA2716C5FE00108290 /* HTTPClient+Utils.swift */; };
+		8A8D21DD2716C6C100108290 /* HTTPClient+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8D21DC2716C6C100108290 /* HTTPClient+Post.swift */; };
 		8A94959926CC09B1006A767F /* HTTPUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A94959826CC09B1006A767F /* HTTPUtils.swift */; };
 		8A999A1C26CA6B7F0024D025 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A999A1B26CA6B7F0024D025 /* HTTPMethod.swift */; };
 		8A999A1E26CA6BD10024D025 /* HTTPStatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A999A1D26CA6BD10024D025 /* HTTPStatusCode.swift */; };
@@ -60,6 +63,9 @@
 		8A6317CF26C69F340099D1F0 /* MeetNetworkSocketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetNetworkSocketTests.swift; sourceTree = "<group>"; };
 		8A6317D126C69F340099D1F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A6317D926C6A2750099D1F0 /* MeetNetworkHTTP.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; name = MeetNetworkHTTP.podspec; path = ../../MeetNetworkHTTP.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		8A8D21D82716C59E00108290 /* HTTPClient+Get.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPClient+Get.swift"; sourceTree = "<group>"; };
+		8A8D21DA2716C5FE00108290 /* HTTPClient+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPClient+Utils.swift"; sourceTree = "<group>"; };
+		8A8D21DC2716C6C100108290 /* HTTPClient+Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPClient+Post.swift"; sourceTree = "<group>"; };
 		8A94959826CC09B1006A767F /* HTTPUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPUtils.swift; sourceTree = "<group>"; };
 		8A999A1B26CA6B7F0024D025 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		8A999A1D26CA6BD10024D025 /* HTTPStatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPStatusCode.swift; sourceTree = "<group>"; };
@@ -141,15 +147,18 @@
 		8A6317A726C69F0A0099D1F0 /* MeetNetworkHTTP */ = {
 			isa = PBXGroup;
 			children = (
-				8A6317D926C6A2750099D1F0 /* MeetNetworkHTTP.podspec */,
-				8A6317A826C69F0A0099D1F0 /* MeetNetworkHTTP.h */,
-				8A6317A926C69F0A0099D1F0 /* Info.plist */,
-				8A999A1B26CA6B7F0024D025 /* HTTPMethod.swift */,
-				8A999A1D26CA6BD10024D025 /* HTTPStatusCode.swift */,
 				8A999A1F26CA6E4F0024D025 /* HTTPClient.swift */,
-				8A94959826CC09B1006A767F /* HTTPUtils.swift */,
+				8A8D21D82716C59E00108290 /* HTTPClient+Get.swift */,
+				8A8D21DC2716C6C100108290 /* HTTPClient+Post.swift */,
+				8A8D21DA2716C5FE00108290 /* HTTPClient+Utils.swift */,
 				8A5C53FD26CD0A1C00F7282C /* HTTPError.swift */,
+				8A999A1B26CA6B7F0024D025 /* HTTPMethod.swift */,
 				8A5C53FF26CD182E00F7282C /* HTTPResult.swift */,
+				8A999A1D26CA6BD10024D025 /* HTTPStatusCode.swift */,
+				8A94959826CC09B1006A767F /* HTTPUtils.swift */,
+				8A6317A926C69F0A0099D1F0 /* Info.plist */,
+				8A6317A826C69F0A0099D1F0 /* MeetNetworkHTTP.h */,
+				8A6317D926C6A2750099D1F0 /* MeetNetworkHTTP.podspec */,
 			);
 			path = MeetNetworkHTTP;
 			sourceTree = "<group>";
@@ -421,9 +430,12 @@
 				8A5C540026CD182E00F7282C /* HTTPResult.swift in Sources */,
 				8A999A1C26CA6B7F0024D025 /* HTTPMethod.swift in Sources */,
 				8A999A2026CA6E4F0024D025 /* HTTPClient.swift in Sources */,
+				8A8D21D92716C59E00108290 /* HTTPClient+Get.swift in Sources */,
+				8A8D21DB2716C5FE00108290 /* HTTPClient+Utils.swift in Sources */,
 				8A999A1E26CA6BD10024D025 /* HTTPStatusCode.swift in Sources */,
 				8A5C53FE26CD0A1C00F7282C /* HTTPError.swift in Sources */,
 				8A94959926CC09B1006A767F /* HTTPUtils.swift in Sources */,
+				8A8D21DD2716C6C100108290 /* HTTPClient+Post.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
