@@ -18,6 +18,21 @@ class HTTPClientTests: XCTestCase {
         client = HTTPClient.shared
     }
     
+    // MARK: - CONFIG
+    
+    func testTimeoutConfig() {
+        let timeout = 42.0
+        client.config(timeout: timeout)
+        
+        XCTAssertTrue(client.getSession().configuration.timeoutIntervalForRequest == timeout)
+    }
+    
+    func testNoTimeoutConfig() {
+        let timeout = 60.0
+        
+        XCTAssertTrue(client.getSession().configuration.timeoutIntervalForRequest == timeout)
+    }
+    
     // MARK: - URL REQUEST METHODS
     
     func testCreateURLRequestInvalid() {

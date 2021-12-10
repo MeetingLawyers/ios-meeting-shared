@@ -8,10 +8,15 @@
 import Foundation
 
 public enum HTTPError: Error {
+    // Server Error
+    case serverError
+    // Client Error
+    case clientError
+    case noInternet
+    case timeout
+    // Other
     case JSONParseError
     case responseModelNotConformsDecodable
     case createRequest
-    case serverError
-    case clientError
     case unknownError
 }
