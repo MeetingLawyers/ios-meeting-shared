@@ -96,7 +96,7 @@ extension HTTPClient: HTTPClientUtilsProtocol {
             return
         }
         
-        if let jsonData = try? JSONSerialization.data(withJSONObject: parameters) {
+        if let jsonData = try? JSONEncoder().encode(parameters) {
             request.httpBody = jsonData
         }
     }
