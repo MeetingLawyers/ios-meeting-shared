@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2F4E947892141EC50EC79A92 /* Pods_MeetNetworkSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 230CDEECEC665928CD9F9CAF /* Pods_MeetNetworkSocket.framework */; };
+		8A05224D276A1AFA004C892E /* HTTPClient+URLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05224C276A1AFA004C892E /* HTTPClient+URLSessionDelegate.swift */; };
 		8A5C53FE26CD0A1C00F7282C /* HTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5C53FD26CD0A1C00F7282C /* HTTPError.swift */; };
 		8A5C540026CD182E00F7282C /* HTTPResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5C53FF26CD182E00F7282C /* HTTPResult.swift */; };
 		8A6317AF26C69F0B0099D1F0 /* MeetNetworkHTTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6317A526C69F0A0099D1F0 /* MeetNetworkHTTP.framework */; };
@@ -49,6 +50,7 @@
 		347553E423C6B1FBC3BBAEA3 /* Pods-MeetNetworkHTTP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeetNetworkHTTP.release.xcconfig"; path = "Target Support Files/Pods-MeetNetworkHTTP/Pods-MeetNetworkHTTP.release.xcconfig"; sourceTree = "<group>"; };
 		383490B5ABD1598F9A30EA91 /* Pods-MeetNetworkSocket.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeetNetworkSocket.release.xcconfig"; path = "Target Support Files/Pods-MeetNetworkSocket/Pods-MeetNetworkSocket.release.xcconfig"; sourceTree = "<group>"; };
 		738B1B4AE9EAA725BBED62BC /* Pods-MeetNetworkHTTP.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeetNetworkHTTP.debug.xcconfig"; path = "Target Support Files/Pods-MeetNetworkHTTP/Pods-MeetNetworkHTTP.debug.xcconfig"; sourceTree = "<group>"; };
+		8A05224C276A1AFA004C892E /* HTTPClient+URLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPClient+URLSessionDelegate.swift"; sourceTree = "<group>"; };
 		8A5C53FD26CD0A1C00F7282C /* HTTPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPError.swift; sourceTree = "<group>"; };
 		8A5C53FF26CD182E00F7282C /* HTTPResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPResult.swift; sourceTree = "<group>"; };
 		8A6317A526C69F0A0099D1F0 /* MeetNetworkHTTP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MeetNetworkHTTP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -150,6 +152,7 @@
 				8A999A1F26CA6E4F0024D025 /* HTTPClient.swift */,
 				8A8D21D82716C59E00108290 /* HTTPClient+Get.swift */,
 				8A8D21DC2716C6C100108290 /* HTTPClient+Post.swift */,
+				8A05224C276A1AFA004C892E /* HTTPClient+URLSessionDelegate.swift */,
 				8A8D21DA2716C5FE00108290 /* HTTPClient+Utils.swift */,
 				8A5C53FD26CD0A1C00F7282C /* HTTPError.swift */,
 				8A999A1B26CA6B7F0024D025 /* HTTPMethod.swift */,
@@ -429,6 +432,7 @@
 			files = (
 				8A5C540026CD182E00F7282C /* HTTPResult.swift in Sources */,
 				8A999A1C26CA6B7F0024D025 /* HTTPMethod.swift in Sources */,
+				8A05224D276A1AFA004C892E /* HTTPClient+URLSessionDelegate.swift in Sources */,
 				8A999A2026CA6E4F0024D025 /* HTTPClient.swift in Sources */,
 				8A8D21D92716C59E00108290 /* HTTPClient+Get.swift in Sources */,
 				8A8D21DB2716C5FE00108290 /* HTTPClient+Utils.swift in Sources */,

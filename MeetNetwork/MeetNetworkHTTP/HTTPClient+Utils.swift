@@ -11,6 +11,7 @@ internal protocol HTTPClientUtilsProtocol {
     func createURLRequest(url: String, method: HTTPMethod, headers: [String: String]?, parameters: [String: String]?) -> URLRequest?
     func createURLRequest<T: Encodable>(url: String, method: HTTPMethod, headers: [String: String]?, parameters: T?) -> URLRequest?
     func callCompletionHandlerInMainThread<T,E>(result: HTTPResult<T,E>, completion: @escaping CompletionHandler<T,E>)
+    func makeRequest(request: URLRequest, completion: @escaping CompletionHandler<Data,Data>) -> URLSessionDataTask
 }
 
 extension HTTPClient: HTTPClientUtilsProtocol {
@@ -44,6 +45,63 @@ extension HTTPClient: HTTPClientUtilsProtocol {
         return request
     }
     
+    internal func callCompletionHandlerInMainThread<T,E>(result: HTTPResult<T,E>, completion: @escaping CompletionHandler<T,E>) {
+        DispatchQueue.main.async {
+            completion(result)
+        }
+    }
+    
+    internal func makeRequest(request: URLRequest, completion: @escaping CompletionHandler<Data,Data>) -> URLSessionDataTask {
+        let session = getSession()
+        print("\(HTTPUtils.getLogName()): makeRequest - \(request.httpMethod ?? "?") - \(request.url?.absoluteString ?? "?")")
+        print("\(HTTPUtils.getLogName()): makeRequest - HEADERS: \n\(request.allHTTPHeaderFields ?? [:])")
+        if let body = request.httpBody {
+            let bodyString = String(decoding: body, as: UTF8.self)
+            print("\(HTTPUtils.getLogName()): makeRequest - BODY: \(bodyString)")
+        }
+        
+        let dataTask = session.dataTask(with: request) { [weak self] data, urlResponse, error in
+            var body = ""
+            let status = (urlResponse as? HTTPURLResponse)?.statusCode ?? 0
+            
+            if let data = data {
+                body = String(decoding: data, as: UTF8.self)
+                print("\(HTTPUtils.getLogName()): RESPONSE \(status) - BODY:    \(body)")
+            }
+            
+            
+            if let error = error {
+                // Client error
+                if let error = error as NSError?, error.domain == NSURLErrorDomain {
+                    if error.code == NSURLErrorNotConnectedToInternet {
+                        self?.callCompletionHandlerInMainThread(result: .failure(data, .noInternet, status, body), completion: completion)
+                        return
+                    } else if error.code == NSURLErrorTimedOut {
+                        self?.callCompletionHandlerInMainThread(result: .failure(data, .timeout, status, body), completion: completion)
+                        return
+                    }
+                }
+                self?.callCompletionHandlerInMainThread(result: .failure(data, .clientError, status, body), completion: completion)
+                return
+            } else {
+                guard let httpResponse = urlResponse as? HTTPURLResponse,
+                      httpResponse.status?.responseType == .success else {
+                    // Server error
+                    self?.callCompletionHandlerInMainThread(result: .failure(data, .serverError, status, body), completion: completion)
+                    return
+                }
+                
+                self?.callCompletionHandlerInMainThread(result: .success(data), completion: completion)
+                return
+            }
+        }
+        
+        dataTask.resume()
+        return dataTask
+    }
+}
+
+extension HTTPClient {
     internal func addRequestHeaders(request: inout URLRequest, headers: [String: String]) {
         for (header, value) in headers {
             request.addValue(value, forHTTPHeaderField: header)
@@ -101,9 +159,21 @@ extension HTTPClient: HTTPClientUtilsProtocol {
         }
     }
     
-    internal func callCompletionHandlerInMainThread<T,E>(result: HTTPResult<T,E>, completion: @escaping CompletionHandler<T,E>) {
-        DispatchQueue.main.async {
-            completion(result)
+    internal func getSession() -> URLSession {
+        if let session = session {
+            return session
         }
+        
+        let configuration = URLSessionConfiguration.default
+        
+        if let requestTimeout = requestTimeout {
+            configuration.timeoutIntervalForRequest = requestTimeout
+            configuration.timeoutIntervalForResource = requestTimeout
+        }
+        
+        self.session = URLSession(configuration: configuration,
+                                  delegate: self,
+                                  delegateQueue: nil)
+        return self.session ?? URLSession.shared
     }
 }

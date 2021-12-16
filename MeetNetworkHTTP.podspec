@@ -13,8 +13,8 @@ Pod::Spec.new do |spec|
     spec.source       = {   :git => "https://github.com/MeetingLawyers/ios-meeting-shared.git",
                             :tag => spec.name + '-' + spec.version.to_s }
 
-    spec.ios.deployment_target = '11.0'
-    spec.platform = :ios, '11.0'
+    spec.ios.deployment_target = '13.0'
+    spec.platform = :ios, '13.0'
     spec.swift_version = '5.3'
 
     spec.source_files = "MeetNetwork/MeetNetworkHTTP/**/*.{swift}"
