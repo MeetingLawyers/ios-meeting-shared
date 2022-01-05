@@ -1,4 +1,7 @@
 Pod::Spec.new do |spec|
+    
+    # UPDATE POD REPO -> RUN:
+    # pod repo push meetingCore MeetNetworkHTTP.podspec --allow-warnings
 
     spec.name         = "MeetNetworkHTTP"
     spec.version      = "0.0.4"
