@@ -7,7 +7,7 @@
 
 import Foundation
 
-public typealias CompletionHandler<T,E> = (HTTPResult<T,E>?) -> Void
+public typealias RequestCompletionHandler<T,E> = (HTTPResult<T,E>?) -> Void
 
 public protocol HTTPClientProtocol: HTTPClientGetProtocol, HTTPClientPostProtocol {
     func config(timeout: Double?)
@@ -27,7 +27,14 @@ public class HTTPClient: NSObject, HTTPClientProtocol {
         self.session = nil
     }
     
+    /// Set HOST : SHA256 key. Example ["google.com" : "Z7iX8iPL/tb+En3S+O8dX8VWg/fn/BYJGWopTO3cNqU="]
+    /// - Parameter pinning: key value pinning
     public func setPinning(pinning: [String: String]?) {
-        self.pinning = pinning
+        if let pinning = pinning {
+            let pinningSanitized = Dictionary(uniqueKeysWithValues: pinning.map { key, value in (key.replacingOccurrences(of: "*.", with: ""), value) })
+            self.pinning = pinningSanitized
+            return
+        }
+        self.pinning = nil
     }
 }

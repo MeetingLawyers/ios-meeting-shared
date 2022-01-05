@@ -10,8 +10,8 @@ import Foundation
 internal protocol HTTPClientUtilsProtocol {
     func createURLRequest(url: String, method: HTTPMethod, headers: [String: String]?, parameters: [String: String]?) -> URLRequest?
     func createURLRequest<T: Encodable>(url: String, method: HTTPMethod, headers: [String: String]?, parameters: T?) -> URLRequest?
-    func callCompletionHandlerInMainThread<T,E>(result: HTTPResult<T,E>, completion: @escaping CompletionHandler<T,E>)
-    func makeRequest(request: URLRequest, completion: @escaping CompletionHandler<Data,Data>) -> URLSessionDataTask
+    func callCompletionHandlerInMainThread<T,E>(result: HTTPResult<T,E>, completion: @escaping RequestCompletionHandler<T,E>)
+    func makeRequest(request: URLRequest, withCache: Bool, completion: @escaping RequestCompletionHandler<Data,Data>) -> URLSessionDataTask
 }
 
 extension HTTPClient: HTTPClientUtilsProtocol {
@@ -45,14 +45,15 @@ extension HTTPClient: HTTPClientUtilsProtocol {
         return request
     }
     
-    internal func callCompletionHandlerInMainThread<T,E>(result: HTTPResult<T,E>, completion: @escaping CompletionHandler<T,E>) {
+    internal func callCompletionHandlerInMainThread<T,E>(result: HTTPResult<T,E>, completion: @escaping RequestCompletionHandler<T,E>) {
         DispatchQueue.main.async {
             completion(result)
         }
     }
     
-    internal func makeRequest(request: URLRequest, completion: @escaping CompletionHandler<Data,Data>) -> URLSessionDataTask {
+    internal func makeRequest(request tmpRequest: URLRequest, withCache: Bool = true, completion: @escaping RequestCompletionHandler<Data,Data>) -> URLSessionDataTask {
         let session = getSession()
+        var request = tmpRequest
         print("\(HTTPUtils.getLogName()): makeRequest - \(request.httpMethod ?? "?") - \(request.url?.absoluteString ?? "?")")
         print("\(HTTPUtils.getLogName()): makeRequest - HEADERS: \n\(request.allHTTPHeaderFields ?? [:])")
         if let body = request.httpBody {
@@ -60,15 +61,25 @@ extension HTTPClient: HTTPClientUtilsProtocol {
             print("\(HTTPUtils.getLogName()): makeRequest - BODY: \(bodyString)")
         }
         
+        if !withCache {
+            print("\(HTTPUtils.getLogName()): makeRequest CLEAR CACHE FOR: - \(request.httpMethod ?? "?") - \(request.url?.absoluteString ?? "?")")
+            session.configuration.urlCache?.removeCachedResponse(for: request)
+            request.cachePolicy = URLRequest.CachePolicy.reloadIgnoringLocalCacheData
+        }
+        
         let dataTask = session.dataTask(with: request) { [weak self] data, urlResponse, error in
             var body = ""
             let status = (urlResponse as? HTTPURLResponse)?.statusCode ?? 0
             
-            if let data = data {
-                body = String(decoding: data, as: UTF8.self)
-                print("\(HTTPUtils.getLogName()): RESPONSE \(status) - BODY:    \(body)")
+            if let httpResponse = urlResponse as? HTTPURLResponse,
+               let date = httpResponse.value(forHTTPHeaderField: "Date") {
+                print("\(HTTPUtils.getLogName()): RESPONSE \(status) - DATE: \(date)")
             }
             
+            if let data = data {
+                body = String(decoding: data, as: UTF8.self)
+                print("\(HTTPUtils.getLogName()): RESPONSE \(status) - BODY: \(body)")
+            }
             
             if let error = error {
                 // Client error
@@ -175,5 +186,42 @@ extension HTTPClient {
                                   delegate: self,
                                   delegateQueue: nil)
         return self.session ?? URLSession.shared
+    }
+    
+    // MARK: Handle response
+    
+    internal func handleDataTaskError<T>(data: Data?, httpError: HTTPError, status: Int, body: String?, completion: @escaping RequestCompletionHandler<T,Data>) {
+        self.callCompletionHandlerInMainThread(result: .failure(data, httpError, status, body), completion: completion)
+    }
+    
+    internal func handleDataTaskError<T, E: Decodable>(data: Data?, httpError: HTTPError, status: Int, body: String?, completion: @escaping RequestCompletionHandler<T,E>) {
+        // Decode json
+        if let data = data, let decodedResponse = try? JSONDecoder().decode(E.self, from: data) {
+            self.callCompletionHandlerInMainThread(result: .failure(decodedResponse, httpError, status, body), completion: completion)
+            return
+        }
+        
+        var body = ""
+        if let data = data {
+            body = String(decoding: data, as: UTF8.self)
+        }
+        
+        self.callCompletionHandlerInMainThread(result: .failure(nil, httpError, 0, body), completion: completion)
+    }
+    
+    internal func handleDataTaskResponse<T: Decodable,E>(data: Data?, completion: @escaping RequestCompletionHandler<T,E>) {
+        // Decode json
+        if let data = data {
+            if let decodedResponse = try? JSONDecoder().decode(T.self, from: data) {
+                self.callCompletionHandlerInMainThread(result: .success(decodedResponse), completion: completion)
+                return
+            } else {
+                let body = String(decoding: data, as: UTF8.self)
+                self.callCompletionHandlerInMainThread(result: .failure(nil, .JSONParseError, 0, body), completion: completion)
+                return
+            }
+        } else {
+            self.callCompletionHandlerInMainThread(result: .success(nil), completion: completion)
+        }
     }
 }

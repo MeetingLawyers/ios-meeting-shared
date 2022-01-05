@@ -23,6 +23,7 @@ extension HTTPClient: URLSessionDelegate {
                 let pinningRecordKey = pinning.keys.first(where: { challenge.protectionSpace.host.contains($0) }),
                 let pinningHash = pinning[pinningRecordKey]
         else {
+            print("\(HTTPUtils.getLogName()): didReceive challenge - NO PINNING HOST MATCH")
             completionHandler(.performDefaultHandling, nil);
             return;
         }
@@ -58,6 +59,7 @@ extension HTTPClient: URLSessionDelegate {
                 if let pubKeyData = SecKeyCopyExternalRepresentation(pubKey, &error) {
                     let sha256Key = sha256(data: pubKeyData as Data);
                     if(pinningHash.contains(sha256Key)) {
+                        print("\(HTTPUtils.getLogName()): didReceive challenge - PINNING OK")
                         let credential = URLCredential(trust: serverTrust);
                         completionHandler(.useCredential, credential);
                         return
@@ -66,6 +68,7 @@ extension HTTPClient: URLSessionDelegate {
             }
         }
         
+        print("\(HTTPUtils.getLogName()): didReceive challenge - PINNING ERROR")
         completionHandler(.cancelAuthenticationChallenge, nil);
     }
 }
