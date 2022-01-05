@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
     spec.name         = "MeetNetworkHTTP"
-    spec.version      = "0.0.3"
+    spec.version      = "0.0.4"
     spec.summary      = "MeetNetworkHTTP is an HTTP networking library written in Swift."
 
     spec.homepage     = "https://meetinglawyers.com"
