@@ -26,7 +26,7 @@ extension HTTPClient: HTTPClientPostProtocol {
     }
     
     public func post(request: URLRequest, completion: @escaping RequestCompletionHandler<Data, Data>) {
-        _ = makeRequest(request: request, withCache: false, completion: completion)
+        _ = makeRequest(request: request, clearCache: true, completion: completion)
     }
     
     // MARK: - JSON Parse OK Response
@@ -40,7 +40,7 @@ extension HTTPClient: HTTPClientPostProtocol {
     }
     
     public func post<OKResponse>(request: URLRequest, responseModel: OKResponse.Type, completion: @escaping RequestCompletionHandler<OKResponse, Data>) where OKResponse : Decodable {
-        _ = makeRequest(request: request, withCache: false, completion: { result in
+        _ = makeRequest(request: request, clearCache: true, completion: { result in
             switch result {
             case let .success(data):
                 self.handleDataTaskResponse(data: data, completion: completion)

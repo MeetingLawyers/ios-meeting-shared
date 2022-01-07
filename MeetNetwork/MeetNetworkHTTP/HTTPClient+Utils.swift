@@ -11,7 +11,7 @@ internal protocol HTTPClientUtilsProtocol {
     func createURLRequest(url: String, method: HTTPMethod, headers: [String: String]?, parameters: [String: String]?) -> URLRequest?
     func createURLRequest<T: Encodable>(url: String, method: HTTPMethod, headers: [String: String]?, parameters: T?) -> URLRequest?
     func callCompletionHandlerInMainThread<T,E>(result: HTTPResult<T,E>, completion: @escaping RequestCompletionHandler<T,E>)
-    func makeRequest(request: URLRequest, withCache: Bool, completion: @escaping RequestCompletionHandler<Data,Data>) -> URLSessionDataTask
+    func makeRequest(request: URLRequest, clearCache: Bool, completion: @escaping RequestCompletionHandler<Data,Data>) -> URLSessionDataTask
 }
 
 extension HTTPClient: HTTPClientUtilsProtocol {
@@ -51,7 +51,7 @@ extension HTTPClient: HTTPClientUtilsProtocol {
         }
     }
     
-    internal func makeRequest(request tmpRequest: URLRequest, withCache: Bool = true, completion: @escaping RequestCompletionHandler<Data,Data>) -> URLSessionDataTask {
+    internal func makeRequest(request tmpRequest: URLRequest, clearCache: Bool = false, completion: @escaping RequestCompletionHandler<Data,Data>) -> URLSessionDataTask {
         let session = getSession()
         var request = tmpRequest
         print("\(HTTPUtils.getLogName()): makeRequest - \(request.httpMethod ?? "?") - \(request.url?.absoluteString ?? "?")")
@@ -61,7 +61,7 @@ extension HTTPClient: HTTPClientUtilsProtocol {
             print("\(HTTPUtils.getLogName()): makeRequest - BODY: \(bodyString)")
         }
         
-        if !withCache {
+        if clearCache {
             print("\(HTTPUtils.getLogName()): makeRequest CLEAR CACHE FOR: - \(request.httpMethod ?? "?") - \(request.url?.absoluteString ?? "?")")
             session.configuration.urlCache?.removeCachedResponse(for: request)
             request.cachePolicy = URLRequest.CachePolicy.reloadIgnoringLocalCacheData
