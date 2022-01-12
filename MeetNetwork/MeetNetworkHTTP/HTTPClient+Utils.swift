@@ -38,7 +38,7 @@ extension HTTPClient: HTTPClientUtilsProtocol {
         if request != nil {
             if method == .get {
                 addGetParameters(request: &request!, parameters: parameters)
-            } else if method == .post {
+            } else if method == .post || method == .put {
                 addJsonBodyParameters(request: &request!, parameters: parameters)
             }
         }
