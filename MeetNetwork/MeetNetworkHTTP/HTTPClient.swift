@@ -12,9 +12,13 @@ public typealias RequestCompletionHandler<T,E> = (HTTPResult<T,E>?) -> Void
 public protocol HTTPClientProtocol: HTTPClientGetProtocol, HTTPClientPostProtocol {
     func config(timeout: Double?)
     func setPinning(pinning: [String: String]?)
+    func clearAllCache()
 }
 
 public class HTTPClient: NSObject, HTTPClientProtocol {
+    
+    public typealias Output = (data: Data, response: URLResponse)
+    public typealias DecodedOutput<T> = (data: T, response: URLResponse)
     
     public static let shared = HTTPClient()
     
@@ -36,5 +40,9 @@ public class HTTPClient: NSObject, HTTPClientProtocol {
             return
         }
         self.pinning = nil
+    }
+    
+    public func clearAllCache() {
+        self.session?.configuration.urlCache?.removeAllCachedResponses()
     }
 }

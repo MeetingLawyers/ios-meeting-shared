@@ -8,6 +8,6 @@
 import Foundation
 
 public enum HTTPResult<T, U> {
-    case success(T?)
+    case success(T?, URLResponse?)
     case failure(U?, HTTPError, Int, String?)
 }

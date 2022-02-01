@@ -66,8 +66,8 @@ extension HTTPClient: HTTPClientGetProtocol {
     public func get<OKResponse>(request: URLRequest, responseModel: OKResponse.Type, clearCache: Bool = false, completion: @escaping RequestCompletionHandler<OKResponse, Data>) where OKResponse : Decodable {
         _ = makeRequest(request: request, clearCache: clearCache, completion: { result in
             switch result {
-            case let .success(data):
-                self.handleDataTaskResponse(data: data, completion: completion)
+            case let .success(data, response):
+                self.handleDataTaskResponse(data: data, response: response, completion: completion)
             case let .failure(data, error, status, body):
                 self.handleDataTaskError(data: data, httpError: error, status: status, body: body, completion: completion)
             default: break
@@ -96,8 +96,8 @@ extension HTTPClient: HTTPClientGetProtocol {
     public func get<OKResponse, KOResponse>(request: URLRequest, responseModel: OKResponse.Type, errorModel: KOResponse.Type, clearCache: Bool = false, completion: @escaping RequestCompletionHandler<OKResponse, KOResponse>) where OKResponse : Decodable, KOResponse : Decodable {
         _ = makeRequest(request: request, clearCache: clearCache, completion: { result in
             switch result {
-            case let .success(data):
-                self.handleDataTaskResponse(data: data, completion: completion)
+            case let .success(data, response):
+                self.handleDataTaskResponse(data: data, response: response, completion: completion)
             case let .failure(data, error, status, body):
                 self.handleDataTaskError(data: data, httpError: error, status: status, body: body, completion: completion)
             default: break

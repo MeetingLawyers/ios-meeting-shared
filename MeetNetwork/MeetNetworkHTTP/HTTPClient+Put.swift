@@ -42,8 +42,8 @@ extension HTTPClient: HTTPClientPutProtocol {
     public func put<OKResponse>(request: URLRequest, responseModel: OKResponse.Type, completion: @escaping RequestCompletionHandler<OKResponse, Data>) where OKResponse : Decodable {
         _ = makeRequest(request: request, clearCache: true, completion: { result in
             switch result {
-            case let .success(data):
-                self.handleDataTaskResponse(data: data, completion: completion)
+            case let .success(data, response):
+                self.handleDataTaskResponse(data: data, response: response, completion: completion)
             case let .failure(data, error, status, body):
                 self.handleDataTaskError(data: data, httpError: error, status: status, body: body, completion: completion)
             default: break

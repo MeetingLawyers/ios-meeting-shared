@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 internal protocol HTTPClientUtilsProtocol {
     func createURLRequest(url: String, method: HTTPMethod, headers: [String: String]?, parameters: [String: String]?) -> URLRequest?
@@ -46,12 +47,17 @@ extension HTTPClient: HTTPClientUtilsProtocol {
     }
     
     internal func callCompletionHandlerInMainThread<T,E>(result: HTTPResult<T,E>, completion: @escaping RequestCompletionHandler<T,E>) {
+        guard !Thread.isMainThread else {
+            completion(result)
+            return
+        }
+        
         DispatchQueue.main.async {
             completion(result)
         }
     }
     
-    internal func makeRequest(request tmpRequest: URLRequest, clearCache: Bool = false, completion: @escaping RequestCompletionHandler<Data,Data>) -> URLSessionDataTask {
+    internal func prepareMakeRequest(request tmpRequest: inout URLRequest, clearCache: Bool = false) -> URLSession {
         let session = getSession()
         var request = tmpRequest
         print("\(HTTPUtils.getLogName()): makeRequest - \(request.httpMethod ?? "?") - \(request.url?.absoluteString ?? "?")")
@@ -66,6 +72,13 @@ extension HTTPClient: HTTPClientUtilsProtocol {
             session.configuration.urlCache?.removeCachedResponse(for: request)
             request.cachePolicy = URLRequest.CachePolicy.reloadIgnoringLocalCacheData
         }
+        
+        return session
+    }
+    
+    internal func makeRequest(request tmpRequest: URLRequest, clearCache: Bool = false, completion: @escaping RequestCompletionHandler<Data,Data>) -> URLSessionDataTask {
+        var request = tmpRequest
+        let session = self.prepareMakeRequest(request: &request, clearCache: clearCache)
         
         let dataTask = session.dataTask(with: request) { [weak self] data, urlResponse, error in
             var body = ""
@@ -102,13 +115,60 @@ extension HTTPClient: HTTPClientUtilsProtocol {
                     return
                 }
                 
-                self?.callCompletionHandlerInMainThread(result: .success(data), completion: completion)
+                self?.callCompletionHandlerInMainThread(result: .success(data, urlResponse), completion: completion)
                 return
             }
         }
         
         dataTask.resume()
         return dataTask
+    }
+    
+    /// Make request with combine
+    /// - Parameters:
+    ///   - tmpRequest: request
+    ///   - clearCache: if true clear cache before make request
+    /// - Returns: Publisher for the request
+    internal func makeRequest(request tmpRequest: URLRequest, clearCache: Bool = false) -> AnyPublisher<HTTPClient.Output, HTTPError> {
+        var request = tmpRequest
+        let session = self.prepareMakeRequest(request: &request, clearCache: clearCache)
+        
+        return session.dataTaskPublisher(for: request)
+            .tryMap() { element in
+                var body = ""
+                let status = (element.response as? HTTPURLResponse)?.statusCode ?? 0
+                
+                if let httpResponse = element.response as? HTTPURLResponse,
+                   let date = httpResponse.value(forHTTPHeaderField: "Date") {
+                    print("\(HTTPUtils.getLogName()): RESPONSE \(status) - DATE: \(date)")
+                }
+                
+                body = String(decoding: element.data, as: UTF8.self)
+                print("\(HTTPUtils.getLogName()): RESPONSE \(status) - BODY: \(body)")
+                
+                guard let httpResponse = element.response as? HTTPURLResponse,
+                      httpResponse.status?.responseType == .success else {
+                      throw HTTPError.serverError
+                }
+                
+                return element
+            }
+            .mapError({ error -> HTTPError in
+                // Client error
+                if let httpError = error as? HTTPError {
+                    return httpError
+                } else if let error = error as NSError?, error.domain == NSURLErrorDomain {
+                    if error.code == NSURLErrorNotConnectedToInternet {
+                        return .noInternet
+                    } else if error.code == NSURLErrorTimedOut {
+                        return .timeout
+                    }
+                }
+                
+                return .clientError
+            })
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
     }
 }
 
@@ -209,11 +269,11 @@ extension HTTPClient {
         self.callCompletionHandlerInMainThread(result: .failure(nil, httpError, 0, body), completion: completion)
     }
     
-    internal func handleDataTaskResponse<T: Decodable,E>(data: Data?, completion: @escaping RequestCompletionHandler<T,E>) {
+    internal func handleDataTaskResponse<T: Decodable,E>(data: Data?, response: URLResponse?, completion: @escaping RequestCompletionHandler<T,E>) {
         // Decode json
         if let data = data {
             if let decodedResponse = try? JSONDecoder().decode(T.self, from: data) {
-                self.callCompletionHandlerInMainThread(result: .success(decodedResponse), completion: completion)
+                self.callCompletionHandlerInMainThread(result: .success(decodedResponse, response), completion: completion)
                 return
             } else {
                 let body = String(decoding: data, as: UTF8.self)
@@ -221,7 +281,7 @@ extension HTTPClient {
                 return
             }
         } else {
-            self.callCompletionHandlerInMainThread(result: .success(nil), completion: completion)
+            self.callCompletionHandlerInMainThread(result: .success(nil, nil), completion: completion)
         }
     }
 }
