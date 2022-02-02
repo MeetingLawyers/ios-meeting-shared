@@ -8,6 +8,7 @@
 import Foundation
 import CommonCrypto
 
+// MARK: URLSessionDelegate - PINNING
 extension HTTPClient: URLSessionDelegate {
     
     internal var rsa2048Asn1Header:[UInt8] {
@@ -71,9 +72,7 @@ extension HTTPClient: URLSessionDelegate {
         print("\(HTTPUtils.getLogName()): didReceive challenge - PINNING ERROR")
         completionHandler(.cancelAuthenticationChallenge, nil);
     }
-}
-
-extension HTTPClient {
+    
     private func sha256(data : Data) -> String {
         var keyWithHeader = Data(rsa2048Asn1Header)
         keyWithHeader.append(data)
@@ -83,5 +82,30 @@ extension HTTPClient {
         }
         
         return Data(hash).base64EncodedString()
+    }
+}
+
+// MARK: URLSessionDelegate - METRICS
+
+extension HTTPClient: URLSessionTaskDelegate {
+    
+    public func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
+        let duration = metrics.taskInterval.duration
+        print("\(HTTPUtils.getLogName()): RESPONSE - \(task.originalRequest?.httpMethod ?? "?") (\(round(1000 * duration)) ms) - \(task.originalRequest?.url?.absoluteString ?? "?")")
+        for metric in metrics.transactionMetrics {
+            print("\(HTTPUtils.getLogName()): TRANSACTION - \(metric.request.httpMethod ?? "?") - \(getFetchType(type: metric.resourceFetchType)) - \(metric.countOfResponseBodyBytesReceived) Bytes - \(metric.request.url?.absoluteString ?? "?")")
+        }
+        print(task)
+    }
+    
+    internal func getFetchType(type: URLSessionTaskMetrics.ResourceFetchType) -> String {
+        switch type {
+        case .localCache:
+            return "LOCAL"
+        case .networkLoad:
+            return "NETWORK"
+        default:
+            return "?"
+        }
     }
 }
