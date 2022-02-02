@@ -93,7 +93,12 @@ extension HTTPClient: URLSessionTaskDelegate {
         let duration = metrics.taskInterval.duration
         print("\(HTTPUtils.getLogName()): RESPONSE - \(task.originalRequest?.httpMethod ?? "?") (\(round(1000 * duration)) ms) - \(task.originalRequest?.url?.absoluteString ?? "?")")
         for metric in metrics.transactionMetrics {
-            print("\(HTTPUtils.getLogName()): TRANSACTION - \(metric.request.httpMethod ?? "?") - \(getFetchType(type: metric.resourceFetchType)) - \(metric.countOfResponseBodyBytesReceived) Bytes - \(metric.request.url?.absoluteString ?? "?")")
+            var status = 0
+            if let httpResponse = metric.response as? HTTPURLResponse {
+                status = httpResponse.statusCode
+            }
+            
+            print("\(HTTPUtils.getLogName()): TRANSACTION - \(metric.request.httpMethod ?? "?") - status \(status) - \(getFetchType(type: metric.resourceFetchType)) - \(metric.countOfResponseBodyBytesReceived) Bytes - \(metric.request.url?.absoluteString ?? "?")")
         }
         print(task)
     }
