@@ -59,18 +59,18 @@ extension HTTPClient: HTTPClientUtilsProtocol {
     
     internal func prepareMakeRequest(request tmpRequest: inout URLRequest, clearCache: Bool = false) -> URLSession {
         let session = getSession()
-        var request = tmpRequest
-        print("\(HTTPUtils.getLogName()): makeRequest - \(request.httpMethod ?? "?") - \(request.url?.absoluteString ?? "?")")
-        print("\(HTTPUtils.getLogName()): makeRequest - HEADERS: \n\(request.allHTTPHeaderFields ?? [:])")
-        if let body = request.httpBody {
+
+        print("\(HTTPUtils.getLogName()): makeRequest - \(tmpRequest.httpMethod ?? "?") - \(tmpRequest.url?.absoluteString ?? "?")")
+        print("\(HTTPUtils.getLogName()): makeRequest - HEADERS: \n\(tmpRequest.allHTTPHeaderFields ?? [:])")
+        if let body = tmpRequest.httpBody {
             let bodyString = String(decoding: body, as: UTF8.self)
             print("\(HTTPUtils.getLogName()): makeRequest - BODY: \(bodyString)")
         }
         
         if clearCache {
-            print("\(HTTPUtils.getLogName()): makeRequest CLEAR CACHE FOR: - \(request.httpMethod ?? "?") - \(request.url?.absoluteString ?? "?")")
-            session.configuration.urlCache?.removeCachedResponse(for: request)
-            request.cachePolicy = URLRequest.CachePolicy.reloadIgnoringLocalCacheData
+            print("\(HTTPUtils.getLogName()): makeRequest CLEAR CACHE FOR: - \(tmpRequest.httpMethod ?? "?") - \(tmpRequest.url?.absoluteString ?? "?")")
+            session.configuration.urlCache?.removeCachedResponse(for: tmpRequest)
+            tmpRequest.cachePolicy = URLRequest.CachePolicy.reloadIgnoringLocalCacheData
         }
         
         return session
