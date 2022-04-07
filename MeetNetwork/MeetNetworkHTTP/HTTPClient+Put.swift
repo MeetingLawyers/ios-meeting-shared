@@ -9,6 +9,7 @@ import Foundation
 
 public protocol HTTPClientPutProtocol {
     // No JSON Parse
+    func put(url: String, headers: [String:String]?, completion: @escaping RequestCompletionHandler<Data,Data>)
     func put<T: Encodable>(url: String, body: T?, headers: [String:String]?, completion: @escaping RequestCompletionHandler<Data,Data>)
     func put(request: URLRequest, completion: @escaping RequestCompletionHandler<Data,Data>)
     // JSON Parse OK Response
@@ -17,6 +18,14 @@ public protocol HTTPClientPutProtocol {
 }
 
 extension HTTPClient: HTTPClientPutProtocol {
+    public func put(url: String, headers: [String:String]?, completion: @escaping RequestCompletionHandler<Data,Data>) {
+        if let request = createURLRequest(url: url, method: .put, headers: headers, parameters: nil) {
+            put(request: request, completion: completion)
+        } else {
+            self.callCompletionHandlerInMainThread(result: .failure(nil, .createRequest, 0, ""), completion: completion)
+        }
+    }
+    
     public func put<T>(url: String, body: T?, headers: [String : String]?, completion: @escaping RequestCompletionHandler<Data, Data>) where T : Encodable {
         if let request = createURLRequest(url: url, method: .put, headers: headers, parameters: body) {
             put(request: request, completion: completion)

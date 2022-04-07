@@ -61,7 +61,7 @@ extension HTTPClient: HTTPClientUtilsProtocol {
         let session = getSession()
 
         print("\(HTTPUtils.getLogName()): makeRequest - \(tmpRequest.httpMethod ?? "?") - \(tmpRequest.url?.absoluteString ?? "?")")
-        print("\(HTTPUtils.getLogName()): makeRequest - HEADERS: \n\(tmpRequest.allHTTPHeaderFields ?? [:])")
+        print("\(HTTPUtils.getLogName()): makeRequest - HEADERS: \(tmpRequest.allHTTPHeaderFields ?? [:])")
         if let body = tmpRequest.httpBody {
             let bodyString = String(decoding: body, as: UTF8.self)
             print("\(HTTPUtils.getLogName()): makeRequest - BODY: \(bodyString)")
@@ -110,8 +110,15 @@ extension HTTPClient: HTTPClientUtilsProtocol {
             } else {
                 guard let httpResponse = urlResponse as? HTTPURLResponse,
                       httpResponse.status?.responseType == .success else {
-                    // Server error
-                    self?.callCompletionHandlerInMainThread(result: .failure(data, .serverError, status, body), completion: completion)
+                          switch status {
+                          case HTTPStatusCode.unauthorized.rawValue,
+                              HTTPStatusCode.forbidden.rawValue:
+                              // Auth error
+                              self?.callCompletionHandlerInMainThread(result: .failure(data, .authenticationError, status, body), completion: completion)
+                          default:
+                              // Server error
+                              self?.callCompletionHandlerInMainThread(result: .failure(data, .serverError, status, body), completion: completion)
+                          }
                     return
                 }
                 
@@ -148,7 +155,15 @@ extension HTTPClient: HTTPClientUtilsProtocol {
                 
                 guard let httpResponse = element.response as? HTTPURLResponse,
                       httpResponse.status?.responseType == .success else {
-                      throw HTTPError.serverError
+                          switch status {
+                          case HTTPStatusCode.unauthorized.rawValue,
+                              HTTPStatusCode.forbidden.rawValue:
+                              // Auth error
+                              throw HTTPError.authenticationError
+                          default:
+                              // Server error
+                              throw HTTPError.serverError
+                          }
                 }
                 
                 return element

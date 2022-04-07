@@ -9,6 +9,7 @@ import Foundation
 
 public enum HTTPError: Error {
     // Server Error
+    case authenticationError
     case serverError
     // Client Error
     case clientError
