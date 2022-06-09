@@ -139,7 +139,6 @@ extension HTTPClient: HTTPClientUtilsProtocol {
     internal func makeRequest(request tmpRequest: URLRequest, clearCache: Bool = false) -> AnyPublisher<HTTPClient.Output, HTTPError> {
         var request = tmpRequest
         let session = self.prepareMakeRequest(request: &request, clearCache: clearCache)
-        session.configuration.urlCache?.description
         return session.dataTaskPublisher(for: request)
             .tryMap() { element in
                 var body = ""

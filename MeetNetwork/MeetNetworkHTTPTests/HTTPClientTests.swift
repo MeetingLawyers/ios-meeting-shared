@@ -194,7 +194,7 @@ class HTTPClientTests: XCTestCase {
         
         //When
         DispatchQueue.global().async {
-            let result: HTTPResult<Wrapper, Wrapper> = .success(wrapper)
+            let result: HTTPResult<Wrapper, Wrapper> = .success(wrapper, nil)
             self.client.callCompletionHandlerInMainThread(result: result) { Result in
                 // Then
                 XCTAssertTrue(Thread.isMainThread)
