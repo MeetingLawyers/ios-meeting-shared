@@ -4,7 +4,7 @@ Pod::Spec.new do |spec|
     # pod repo push meetingCore MeetNetworkHTTP.podspec --allow-warnings
 
     spec.name         = "MeetNetworkHTTP"
-    spec.version      = "0.0.4"
+    spec.version      = "0.0.5"
     spec.summary      = "MeetNetworkHTTP is an HTTP networking library written in Swift."
 
     spec.homepage     = "https://meetinglawyers.com"
@@ -25,6 +25,15 @@ Pod::Spec.new do |spec|
     spec.test_spec do|test|
         test.source_files = "MeetNetwork/MeetNetworkHTTPTests/**/*.swift"
     end
+    
+    # Xcode 12 Workaround for Simulator
+    spec.pod_target_xcconfig = {
+        'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
+    }
+
+    spec.user_target_xcconfig = {
+        'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
+    }
 
 #    spec.resources = "MeetNetwork/MeetNetworkHTTP/**/*.{png,jpeg,jpg,storyboard,xib,xcassets}"
 
