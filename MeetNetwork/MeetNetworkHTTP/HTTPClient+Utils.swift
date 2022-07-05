@@ -115,6 +115,10 @@ extension HTTPClient: HTTPClientUtilsProtocol {
                               HTTPStatusCode.forbidden.rawValue:
                               // Auth error
                               self?.callCompletionHandlerInMainThread(result: .failure(data, .authenticationError, status, body), completion: completion)
+                          case HTTPStatusCode.notFound.rawValue:
+                              self?.callCompletionHandlerInMainThread(result: .failure(data, .notFound, status, body), completion: completion)
+                          case HTTPStatusCode.conflict.rawValue:
+                              self?.callCompletionHandlerInMainThread(result: .failure(data, .conflict, status, body), completion: completion)
                           default:
                               // Server error
                               self?.callCompletionHandlerInMainThread(result: .failure(data, .serverError, status, body), completion: completion)
@@ -159,6 +163,10 @@ extension HTTPClient: HTTPClientUtilsProtocol {
                               HTTPStatusCode.forbidden.rawValue:
                               // Auth error
                               throw HTTPError.authenticationError
+                          case HTTPStatusCode.notFound.rawValue:
+                              throw HTTPError.notFound
+                          case HTTPStatusCode.conflict.rawValue:
+                              throw HTTPError.conflict
                           default:
                               // Server error
                               throw HTTPError.serverError

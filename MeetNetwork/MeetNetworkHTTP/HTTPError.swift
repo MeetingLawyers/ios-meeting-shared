@@ -13,6 +13,8 @@ public enum HTTPError: Error {
     case serverError
     // Client Error
     case clientError
+    case conflict
+    case notFound
     case noInternet
     case timeout
     // Other
