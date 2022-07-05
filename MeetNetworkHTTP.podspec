@@ -4,7 +4,7 @@ Pod::Spec.new do |spec|
     # pod repo push meetingCore MeetNetworkHTTP.podspec --allow-warnings
 
     spec.name         = "MeetNetworkHTTP"
-    spec.version      = "0.0.5"
+    spec.version      = "0.0.6"
     spec.summary      = "MeetNetworkHTTP is an HTTP networking library written in Swift."
 
     spec.homepage     = "https://meetinglawyers.com"
