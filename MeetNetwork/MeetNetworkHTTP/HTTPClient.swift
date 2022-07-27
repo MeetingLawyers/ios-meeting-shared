@@ -9,7 +9,11 @@ import Foundation
 
 public typealias RequestCompletionHandler<T,E> = (HTTPResult<T,E>?) -> Void
 
-public protocol HTTPClientProtocol: HTTPClientGetProtocol, HTTPClientPostProtocol {
+public protocol HTTPClientProtocol:     HTTPClientGetProtocol,
+                                        HTTPClientGetCombineProtocol,
+                                        HTTPClientPostProtocol,
+                                        HTTPClientPutProtocol,
+                                        HTTPClientDeleteCombineProtocol {
     func config(timeout: Double?)
     func config(cache: URLCache?)
     func config(pinning: [String: String]?)

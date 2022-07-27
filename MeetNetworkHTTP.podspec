@@ -27,13 +27,13 @@ Pod::Spec.new do |spec|
     end
     
     # Xcode 12 Workaround for Simulator
-    spec.pod_target_xcconfig = {
-        'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
-    }
-
-    spec.user_target_xcconfig = {
-        'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
-    }
+#    spec.pod_target_xcconfig = {
+#        'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
+#    }
+#
+#    spec.user_target_xcconfig = {
+#        'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
+#    }
 
 #    spec.resources = "MeetNetwork/MeetNetworkHTTP/**/*.{png,jpeg,jpg,storyboard,xib,xcassets}"
 
