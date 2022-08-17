@@ -14,7 +14,7 @@ public protocol HTTPClientDeleteCombineProtocol {
     func delete(request: URLRequest) -> AnyPublisher<HTTPClient.Output, HTTPError>
 }
 
-extension HTTPClient: HTTPClientDeleteCombineProtocol {
+extension HTTPClient {
     // MARK: - No JSON Parse
     public func delete(url: String, headers: [String : String]? = nil) -> AnyPublisher<HTTPClient.Output, HTTPError> {
         if let request = createURLRequest(url: url, method: .delete, headers: headers, parameters: nil) {

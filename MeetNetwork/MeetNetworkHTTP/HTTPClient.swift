@@ -13,6 +13,7 @@ public protocol HTTPClientProtocol:     HTTPClientGetProtocol,
                                         HTTPClientGetCombineProtocol,
                                         HTTPClientPostProtocol,
                                         HTTPClientPutProtocol,
+                                        HTTPClientPutCombineProtocol,
                                         HTTPClientDeleteCombineProtocol {
     func config(timeout: Double?)
     func config(cache: URLCache?)
