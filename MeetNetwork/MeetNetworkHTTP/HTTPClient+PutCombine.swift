@@ -56,6 +56,10 @@ extension HTTPClient {
                     return HTTPClient.DecodedOutput(decodedResponse, element.response)
                 })
                 .mapError({ error in
+                    if let error = error as? HTTPError {
+                        return error
+                    }
+                    
                     switch error {
                     case is Swift.DecodingError:
                         return .JSONParseError
