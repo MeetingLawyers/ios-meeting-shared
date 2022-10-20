@@ -12,6 +12,7 @@ public typealias RequestCompletionHandler<T,E> = (HTTPResult<T,E>?) -> Void
 public protocol HTTPClientProtocol:     HTTPClientGetProtocol,
                                         HTTPClientGetCombineProtocol,
                                         HTTPClientPostProtocol,
+                                        HTTPClientPostCombineProtocol,
                                         HTTPClientPutProtocol,
                                         HTTPClientPutCombineProtocol,
                                         HTTPClientDeleteCombineProtocol {

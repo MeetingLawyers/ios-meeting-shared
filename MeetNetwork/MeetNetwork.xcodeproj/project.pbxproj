@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2F4E947892141EC50EC79A92 /* Pods_MeetNetworkSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 230CDEECEC665928CD9F9CAF /* Pods_MeetNetworkSocket.framework */; };
 		8A05224D276A1AFA004C892E /* HTTPClient+URLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05224C276A1AFA004C892E /* HTTPClient+URLSessionDelegate.swift */; };
+		8A0F035528FE8E5B00798D95 /* HTTPClient+PostCombine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0F035428FE8E5B00798D95 /* HTTPClient+PostCombine.swift */; };
 		8A10795C285B76B600BF20FB /* HTTPClient+DeleteCombine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A10795B285B76B600BF20FB /* HTTPClient+DeleteCombine.swift */; };
 		8A438D6D27A96F810062422F /* HTTPClient+GetCombine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A438D6C27A96F810062422F /* HTTPClient+GetCombine.swift */; };
 		8A5C53FE26CD0A1C00F7282C /* HTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5C53FD26CD0A1C00F7282C /* HTTPError.swift */; };
@@ -55,6 +56,7 @@
 		383490B5ABD1598F9A30EA91 /* Pods-MeetNetworkSocket.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeetNetworkSocket.release.xcconfig"; path = "Target Support Files/Pods-MeetNetworkSocket/Pods-MeetNetworkSocket.release.xcconfig"; sourceTree = "<group>"; };
 		738B1B4AE9EAA725BBED62BC /* Pods-MeetNetworkHTTP.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeetNetworkHTTP.debug.xcconfig"; path = "Target Support Files/Pods-MeetNetworkHTTP/Pods-MeetNetworkHTTP.debug.xcconfig"; sourceTree = "<group>"; };
 		8A05224C276A1AFA004C892E /* HTTPClient+URLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPClient+URLSessionDelegate.swift"; sourceTree = "<group>"; };
+		8A0F035428FE8E5B00798D95 /* HTTPClient+PostCombine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPClient+PostCombine.swift"; sourceTree = "<group>"; };
 		8A10795B285B76B600BF20FB /* HTTPClient+DeleteCombine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HTTPClient+DeleteCombine.swift"; sourceTree = "<group>"; };
 		8A438D6C27A96F810062422F /* HTTPClient+GetCombine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPClient+GetCombine.swift"; sourceTree = "<group>"; };
 		8A5C53FD26CD0A1C00F7282C /* HTTPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPError.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				8A8D21D82716C59E00108290 /* HTTPClient+Get.swift */,
 				8A438D6C27A96F810062422F /* HTTPClient+GetCombine.swift */,
 				8A8D21DC2716C6C100108290 /* HTTPClient+Post.swift */,
+				8A0F035428FE8E5B00798D95 /* HTTPClient+PostCombine.swift */,
 				8AEE532F278C7B010069FE44 /* HTTPClient+Put.swift */,
 				8AE438D728918959009F03F3 /* HTTPClient+PutCombine.swift */,
 				8A05224C276A1AFA004C892E /* HTTPClient+URLSessionDelegate.swift */,
@@ -447,6 +450,7 @@
 				8A999A1C26CA6B7F0024D025 /* HTTPMethod.swift in Sources */,
 				8A05224D276A1AFA004C892E /* HTTPClient+URLSessionDelegate.swift in Sources */,
 				8AE438D828918959009F03F3 /* HTTPClient+PutCombine.swift in Sources */,
+				8A0F035528FE8E5B00798D95 /* HTTPClient+PostCombine.swift in Sources */,
 				8A999A2026CA6E4F0024D025 /* HTTPClient.swift in Sources */,
 				8A438D6D27A96F810062422F /* HTTPClient+GetCombine.swift in Sources */,
 				8A10795C285B76B600BF20FB /* HTTPClient+DeleteCombine.swift in Sources */,
