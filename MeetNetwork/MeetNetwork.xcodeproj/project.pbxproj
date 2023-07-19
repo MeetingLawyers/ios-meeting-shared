@@ -159,14 +159,10 @@
 		8A6317A726C69F0A0099D1F0 /* MeetNetworkHTTP */ = {
 			isa = PBXGroup;
 			children = (
+				8A76B1C229A8FF5A003E87D7 /* Async */,
+				8A76B1C129A8FF4F003E87D7 /* Combine */,
+				8A76B1C029A8FF41003E87D7 /* Completion */,
 				8A999A1F26CA6E4F0024D025 /* HTTPClient.swift */,
-				8A10795B285B76B600BF20FB /* HTTPClient+DeleteCombine.swift */,
-				8A8D21D82716C59E00108290 /* HTTPClient+Get.swift */,
-				8A438D6C27A96F810062422F /* HTTPClient+GetCombine.swift */,
-				8A8D21DC2716C6C100108290 /* HTTPClient+Post.swift */,
-				8A0F035428FE8E5B00798D95 /* HTTPClient+PostCombine.swift */,
-				8AEE532F278C7B010069FE44 /* HTTPClient+Put.swift */,
-				8AE438D728918959009F03F3 /* HTTPClient+PutCombine.swift */,
 				8A05224C276A1AFA004C892E /* HTTPClient+URLSessionDelegate.swift */,
 				8A8D21DA2716C5FE00108290 /* HTTPClient+Utils.swift */,
 				8A5C53FD26CD0A1C00F7282C /* HTTPError.swift */,
@@ -206,6 +202,34 @@
 				8A6317D126C69F340099D1F0 /* Info.plist */,
 			);
 			path = MeetNetworkSocketTests;
+			sourceTree = "<group>";
+		};
+		8A76B1C029A8FF41003E87D7 /* Completion */ = {
+			isa = PBXGroup;
+			children = (
+				8A8D21D82716C59E00108290 /* HTTPClient+Get.swift */,
+				8A8D21DC2716C6C100108290 /* HTTPClient+Post.swift */,
+				8AEE532F278C7B010069FE44 /* HTTPClient+Put.swift */,
+			);
+			path = Completion;
+			sourceTree = "<group>";
+		};
+		8A76B1C129A8FF4F003E87D7 /* Combine */ = {
+			isa = PBXGroup;
+			children = (
+				8A10795B285B76B600BF20FB /* HTTPClient+DeleteCombine.swift */,
+				8A438D6C27A96F810062422F /* HTTPClient+GetCombine.swift */,
+				8A0F035428FE8E5B00798D95 /* HTTPClient+PostCombine.swift */,
+				8AE438D728918959009F03F3 /* HTTPClient+PutCombine.swift */,
+			);
+			path = Combine;
+			sourceTree = "<group>";
+		};
+		8A76B1C229A8FF5A003E87D7 /* Async */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Async;
 			sourceTree = "<group>";
 		};
 		E6CC84E317E388BE0B7F27FE /* Pods */ = {

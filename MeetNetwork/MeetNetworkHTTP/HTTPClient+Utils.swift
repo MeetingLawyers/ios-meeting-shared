@@ -11,8 +11,13 @@ import Combine
 internal protocol HTTPClientUtilsProtocol {
     func createURLRequest(url: String, method: HTTPMethod, headers: [String: String]?, parameters: [String: String]?) -> URLRequest?
     func createURLRequest<T: Encodable>(url: String, method: HTTPMethod, headers: [String: String]?, parameters: T?) -> URLRequest?
+    
     func callCompletionHandlerInMainThread<T,E>(result: HTTPResult<T,E>, completion: @escaping RequestCompletionHandler<T,E>)
+    
     func makeRequest(request: URLRequest, clearCache: Bool, completion: @escaping RequestCompletionHandler<Data,Data>) -> URLSessionDataTask
+    func makeRequest(request tmpRequest: URLRequest, clearCache: Bool) -> AnyPublisher<HTTPClient.Output, HTTPError>
+    @available(iOS 15.0, *)
+    func makeRequest(request tmpRequest: URLRequest, clearCache: Bool) async throws -> Data
 }
 
 extension HTTPClient: HTTPClientUtilsProtocol {
@@ -191,6 +196,53 @@ extension HTTPClient: HTTPClientUtilsProtocol {
             })
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
+    }
+    
+    @available(iOS 15.0, *)
+    internal func makeRequest(request tmpRequest: URLRequest, clearCache: Bool = false) async throws -> Data {
+        var request = tmpRequest
+        let session = self.prepareMakeRequest(request: &request, clearCache: clearCache)
+        do {
+            let (data, response) = try await session.data(for: request)
+            
+            let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+            
+            if let httpResponse = response as? HTTPURLResponse,
+               let date = httpResponse.value(forHTTPHeaderField: "Date") {
+                print("\(HTTPUtils.getLogName()): RESPONSE \(status) - DATE: \(date)")
+            }
+            
+            let body = String(decoding: data, as: UTF8.self)
+            print("\(HTTPUtils.getLogName()): RESPONSE \(status) - BODY: \(body)")
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  httpResponse.status?.responseType == .success else {
+                      switch status {
+                      case HTTPStatusCode.unauthorized.rawValue,
+                          HTTPStatusCode.forbidden.rawValue:
+                          // Auth error
+                          throw HTTPError.authenticationError
+                      case HTTPStatusCode.notFound.rawValue:
+                          throw HTTPError.notFound
+                      case HTTPStatusCode.conflict.rawValue:
+                          throw HTTPError.conflict
+                      default:
+                          // Server error
+                          throw HTTPError.serverError
+                      }
+            }
+            
+            return data
+        } catch let error {
+            if let error = error as NSError?, error.domain == NSURLErrorDomain {
+                if error.code == NSURLErrorNotConnectedToInternet {
+                    throw HTTPError.noInternet
+                } else if error.code == NSURLErrorTimedOut {
+                    throw HTTPError.timeout
+                }
+            }
+            throw HTTPError.clientError
+        }
     }
 }
 
